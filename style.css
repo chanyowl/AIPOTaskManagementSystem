@@ -1,0 +1,630 @@
+#company-logo {
+    position: absolute;
+    top: 0.5rem; /* Remained same */
+    left: 0.3rem; /* Moved slightly more to the left */
+    width: 150px; /* Increased size for better quality */
+    height: auto; /* Maintain aspect ratio */
+    z-index: 1000; /* Ensure it's on top */
+}
+
+/* Basic Reset & Font */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-size: cover; /* Cover the entire background */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-color: #f0f2f5; /* Fallback background color */
+    color: #333333; /* Dark gray text */
+    margin: 0;
+    padding: 0;
+    /* Ensure body takes full viewport height and acts as flex container */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#app {
+    /* These define #app's role as a flex container filling the body */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allows #app to grow vertically */
+    box-sizing: border-box;
+    /* No visual styles here directly, handled by #app-content or fullscreen state */
+    background-image: url('Gemini_Generated_Image_flth1uflth1uflth.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #f0f2f5; /* Fallback color */
+}
+
+#app-content {
+    /* This defines the white panel's size, centering, and visual styles */
+    width: calc(100% - 4rem); /* 2rem on left and 2rem on right */
+    max-width: 1200px; /* Allow it to be wider on large screens */
+    margin: 2rem auto; /* 2rem top/bottom margin, auto left/right for centering */
+
+    background: rgba(220, 220, 220, 0.8); /* Semi-transparent light gray background */
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    padding: 1.6rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow #app-content to grow vertically within #app */
+    max-height: calc(100vh - 4rem); /* 100vh minus top/bottom margin of #app-content */
+    overflow: hidden; /* Ensure content inside doesn't overflow this panel */
+}
+
+#app:fullscreen #app-content {
+    background: rgba(220, 220, 220, 0.8); /* Semi-transparent light gray background */
+    backdrop-filter: blur(5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* For older browsers with vendor prefixes */
+:-webkit-full-screen#app, :-moz-full-screen#app, :-ms-fullscreen#app {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header {
+    position: relative;
+    top: -1rem;
+}
+
+header h1 {
+    font-family: 'Raleway', sans-serif;
+    color: #003366;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+    font-weight: 600;
+    font-size: .85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Added for pseudo-element positioning */
+}
+
+header h1::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    transform: scaleY(-1);
+    color: #003366;
+    opacity: 0.3;
+    -webkit-mask-image: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 80%);
+    mask-image: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 80%);
+    text-align: center;
+    margin-top: -0.2em;
+}
+
+
+
+/* Main content area should fill remaining space and scroll */
+main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow main to grow vertically */
+    overflow: hidden; /* Hide overflow from children, #task-list will handle scroll */
+    height: 0; /* Important: allows flex-grow to work as expected with scrollable content */
+}
+
+/* Dashboard Panels */
+#dashboard-panels {
+    display: flex;
+    justify-content: flex-start; /* Aligned to left */
+    align-items: center;
+    gap: 0.8rem; /* Doubled gap */
+    margin-bottom: 1.28rem; /* Doubled margin */
+    padding-left: 0.8rem; /* Added padding for left compression */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.panel {
+    /* flex: 1; */ /* Removed to prevent growing */
+    /* min-width: 60px; */ /* Removed in favor of fixed width/height */
+    width: 7.5rem; /* Doubled width (approx 96px) */
+    background: #ffffff; /* White background */
+    border-radius: 12px; /* Doubled border-radius */
+    padding: 0.64rem; /* Doubled padding */
+    /* box-shadow: 0 4px 8px rgba(0,0,0,0.1); */ /* Removed box-shadow */
+    text-align: center;
+    /* aspect-ratio: 1 / 1; */ /* Redundant with fixed width/height */
+    display: flex; /* For centering content vertically */
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.panel-title {
+    font-size: 0.58rem; /* Doubled font-size */
+    color: #6c757d; /* Darker gray */
+    margin-bottom: 0.24rem; /* Doubled margin */
+}
+
+.panel-value {
+    font-size: 2.4rem; /* Significantly increased font-size by 20% */
+    font-weight: bold;
+    color: #333333; /* Dark text */
+    flex-grow: 1; /* Allow to take remaining space */
+    display: flex; /* Make it a flex container */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* New Task Form */
+#task-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    gap: 0.5rem;
+    margin-bottom: 1.6rem;
+}
+
+#task-input, #assigned-to-input, #priority-input, #duedate-input { /* Corrected typo here */
+    padding: 0.6rem 0.8rem; /* Scaled padding */
+    border: 2px solid #ced4da; /* Light gray border */
+    background: #e9ecef; /* Light gray background */
+    color: #333333; /* Dark text */
+    font-size: 0.64rem; /* Scaled font-size */
+    border-radius: 6px; /* Scaled border-radius */
+    transition: border-color 0.3s;
+}
+
+#assigned-to-input, #priority-input {
+    /* To override default browser styling for selects */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Custom arrow icon */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23495057%22%20d%3D%22M287%20197.978L146.2%2057.178%205.4%20197.978h281.6z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 0.7em top 50%;
+    background-size: 0.52em auto;
+    padding-right: 1.6em; /* Make space for the arrow */
+}
+
+#assigned-to-input:focus, #priority-input:focus {
+    border-color: #007bff; /* Blue accent on focus */
+}
+
+#add-task-btn {
+    border: none;
+    background: #003366; /* Dark blue background */
+    color: white;
+    font-size: 1.2rem; /* Reduced font size for the plus sign (1.5rem * 0.8) */
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px; /* Reduced border-radius (8px * 0.8) */
+    transition: background-color 0.3s, transform 0.2s; /* Added transform transition */
+    padding: 0.4rem 0.8rem; /* Reduced padding (0.5rem * 0.8, 1rem * 0.8) */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Added subtle shadow */
+}
+
+#add-task-btn:hover {
+    background: #004488; /* Slightly lighter blue on hover */
+}
+
+.filter-dropdown {
+    position: relative; /* Changed from absolute, so it flows with content */
+    top: auto;
+    left: auto;
+    z-index: auto;
+
+    background: transparent; /* Changed to transparent */
+    color: #003366; /* Changed to match task-header color */
+    border: none; /* No border for a button-like appearance */
+    border-radius: 0; /* Remove border-radius */
+    padding: 0; /* Remove padding */
+    font-size: 0.72rem; /* Match surrounding text */
+    font-weight: bold; /* Match task-header font-weight */
+    cursor: pointer;
+    text-align: left; /* Align text to left */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; /* Remove default browser styling */
+
+    /* Remove custom arrow for dropdown */
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: initial;
+    background-size: initial;
+    padding-right: 0; /* No need for right padding without arrow */
+    transition: none; /* Remove transition */
+    width: 100%; /* Occupy full width of its container */
+}
+
+.filter-dropdown:hover {
+    background: transparent; /* No background on hover */
+    text-decoration: underline; /* Add underline on hover for interaction cue */
+}
+
+/* Remove the old hidden class and filter-btn styling */
+.filter-dropdown.hidden {
+    /* This rule is no longer needed as the dropdown will be visible */
+    /* display: none; */
+}
+
+/* Task Table */
+#task-table {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow task-table to grow */
+    min-height: 0; /* Important for flex items with scrolling content */
+}
+
+.task-header, .task-row {
+    display: grid;
+    /* Adjusted for new columns */
+    grid-template-columns: 3fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr;
+    gap: 1rem; /* Reverted from 0.8rem */
+    align-items: center;
+    padding: 0.48rem 0.64rem; /* Reduced from 0.6rem 0.8rem */
+    border-radius: 8px;
+}
+
+.task-header {
+    font-weight: bold;
+    color: #003366; /* Dark blue */
+    margin-bottom: 0.4rem; /* Scaled margin */
+}
+
+/* Task List Container (the actual scrollable area) */
+#task-list {
+    flex-grow: 1; /* Allow task-list to fill remaining vertical space */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 4px; /* Space for the scrollbar */
+}
+
+.task-row {
+    background: #f8f9fa; /* Very light gray background */
+    margin-bottom: 0.2rem; /* Increased from 0.08rem */
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0; /* Light gray border */
+    animation: fadeIn 0.4s forwards;
+    
+    display: grid; /* Keep grid display for rows */
+    grid-template-columns: 3fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr;
+    gap: 0.5rem; /* Increased from 0.3rem */
+    align-items: center;
+    padding: 0.2rem 0.6rem; /* Increased from 0.1rem 0.6rem */
+    border-radius: 8px;
+}
+
+.task-row.overdue {
+    color: #dc3545; /* Red color for overdue tasks */
+}
+
+.task-row.completed {
+    background-color: #C8E6C9; /* Another 20% lighter green */
+    border: 1px solid #81C784; /* Lighter green border */
+    color: #006400; /* Dark green font color for the whole row */
+}
+
+.task-row.discontinued {
+    background-color: #e9ecef; /* Light gray */
+    color: #6c757d; /* Darker gray text */
+    text-decoration: line-through;
+}
+
+.task-row.completed .task-text {
+    /* color: #006400; /* Dark green text */ */
+}
+.task-cell-assignee-filter {
+    overflow: visible;
+}
+
+.task-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.72rem;
+}
+
+.task-cell a {
+    color: #007bff; /* Blue accent */
+    text-decoration: none;
+}
+
+.task-cell a:hover {
+    text-decoration: underline;
+}
+
+.task-cell.url-cell {
+    cursor: pointer;
+}
+
+.task-cell .url-input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ced4da; /* Light gray border */
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+/* Editable Dates */
+.task-cell.received-date, .task-cell.due-date {
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.editable-date-text {
+    cursor: pointer;
+}
+
+.task-cell.received-date:hover, .task-cell.due-date:hover {
+    background-color: #e9ecef; /* Lighter gray hover */
+}
+
+.task-cell .date-input {
+    width: 100%;
+    box-sizing: border-box;
+    background: #e9ecef; /* Light gray background */
+    color: #333333; /* Dark text */
+    border: 1px solid #ced4da; /* Light gray border */
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0.2rem 0.4rem; /* Scaled padding */
+    margin: 0;
+    height: auto; /* Allow height to adjust */
+    cursor: pointer; /* Indicate it's clickable */
+    -webkit-appearance: none; /* Remove default browser styling for consistency */
+    appearance: none;
+}
+
+/* Priority Styling */
+.priority {
+    border-radius: 9999px; /* Oblong shape */
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.64rem;
+    padding: 0.2em 0.6em; /* Spacing inside the tag */
+    display: inline-block; /* Allows padding and border to apply correctly */
+}
+
+.priority-high {
+    color: #dc3545; /* Red font */
+    background-color: rgba(220, 53, 69, 0.1); /* Light red shade */
+    border: 1px solid #dc3545; /* Red outline */
+}
+.priority-medium {
+    color: #ffc107; /* Dark yellow font */
+    background-color: rgba(255, 193, 7, 0.1); /* Light yellow shade */
+    border: 1px solid #ffc107; /* Dark yellow outline */
+}
+.priority-low {
+    color: #28a745; /* Green font */
+    background-color: rgba(40, 167, 69, 0.1); /* Light green shade */
+    border: 1px solid #28a745; /* Green outline */
+}
+
+
+.task-actions button {
+    background: none;
+    border: none;
+    color: #6c757d; /* Darker gray */
+    font-size: 0.96rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 5px;
+}
+
+.task-actions .delete-btn {
+    margin-left: 1mm;
+}
+
+.task-actions .complete-btn:hover { color: #28a745; }
+.task-actions .delete-btn:hover { color: #dc3545; }
+
+.percent-sign {
+    font-size: 50%;
+    position: relative;
+    bottom: -0.3em; /* Adjusted further */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+    #task-form {
+        grid-template-columns: 1fr 1fr;
+    }
+    #task-form > input, #task-form > select {
+        width: auto;
+    }
+    .task-header {
+        display: none;
+    }
+    .task-row {
+        grid-template-columns: 1fr auto;
+        grid-template-areas: 
+            "name actions"
+            "assigned actions"
+            "priority actions"
+            "url actions"
+            "received actions"
+            "due actions"
+            "duration actions";
+        padding: 1rem;
+    }
+    .task-cell:nth-child(1) { grid-area: name; }
+    .task-cell:nth-child(2) { grid-area: assigned; }
+    .task-cell:nth-child(3) { grid-area: received; }
+    .task-cell:nth-child(4) { grid-area: due; }
+    .task-cell:nth-child(5) { grid-area: priority; }
+    .task-cell:nth-child(6) { grid-area: url; }
+    .task-cell:nth-child(7) { grid-area: duration; }
+    .task-cell:nth-child(8) { grid-area: actions; }
+
+    .task-cell {
+        white-space: normal;
+        font-size: 1rem;
+    }
+}
+
+/* Fullscreen Toggle Icon */
+#fullscreen-toggle {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    font-size: 1.2rem;
+    color: #6c757d; /* Darker gray */
+    cursor: pointer;
+    z-index: 1000;
+    transition: color 0.3s;
+}
+
+#fullscreen-toggle:hover {
+    color: #007bff;
+}
+
+/* Custom Confirmation Modal */
+#custom-confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#custom-confirm-overlay.hidden {
+    display: none;
+}
+
+#custom-confirm-modal {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-.shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 90%;
+    width: 320px;
+}
+
+#custom-confirm-msg {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+#custom-confirm-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+#custom-confirm-buttons button {
+    border: none;
+    border-radius: 5px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#confirm-delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+#confirm-delete-btn:hover {
+    background-color: #c82333;
+}
+
+#cancel-delete-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+#cancel-delete-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Fullscreen styling for #app */
+#app:fullscreen,
+#app:-webkit-full-screen,
+#app:-moz-full-screen,
+#app:-ms-fullscreen {
+    background-image: url('Gemini_Generated_Image_flth1uflth1uflth.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #f0f2f5; /* Fallback color */
+}
+
+
+#chart-container {
+    position: absolute;
+    top: 2rem;
+    right: 4rem;
+    width: 180px;
+    height: 180px;
+}
+
+#completion-chart {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Panel specific colors */
+.panel-2 .panel-value {
+    color: #007bff; /* Blue */
+}
+
+.panel-3 .panel-value {
+    color: #dc3545; /* Red */
+}
+
+.panel-4 .panel-value {
+    color: #fd7e14; /* Orange */
+}
+
+.panel-5 .panel-value {
+    color: #6f42c1; /* Purple */
+}
+
+#task-list::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+#task-list::-webkit-scrollbar-track {
+  background: transparent; /* Track background */
+}
+
+#task-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2); /* Thumb color, semi-transparent */
+  border-radius: 10px; /* Rounded corners for the thumb */
+  border: 2px solid transparent; /* Space around thumb, making it appear thinner */
+  background-clip: content-box; /* Ensures border doesn't expand thumb size */
+}
+
+#task-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4); /* Darker on hover */
+}
